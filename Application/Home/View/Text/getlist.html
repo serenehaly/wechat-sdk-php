@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>分类</title>
+</head>
+<body>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>problem</th>
+				<th>answer</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="textlist" id="vo">
+				<tr>
+					<td>{:$vo['id']}</td>
+					<td>{:$vo['problem']}</td>
+					<td>{:$vo['answer']}</td>
+					<td>
+						<a href="{:U('add')}">添加</a>
+						<a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a>
+						<a href="{:U('del',array('id'=>$vo['id']))}">删除</a>
+					</td>
+				</tr>
+			</volist>
+		</tbody>
+	</table>
+</body>
+</html>

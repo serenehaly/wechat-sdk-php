@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>修改分类</title>
+    </head>
+    <body>
+    	<form action="{:U('edit',array('id'=>I('get.id')))}" method="POST">
+    		<label>
+    			<input type="hidden" name="id" value="{:$updatemess['id']}">
+    			<span>problem</span>
+    			<input name="name" value="{:$updatemess['problem']}"><br>
+    			<span>answer</span>
+    			<input name="name" value="{:$updatemess['answer']}">
+    		</label>
+            <button type="submit">修改</button>
+    	</form>
+    </body>
+</html>
