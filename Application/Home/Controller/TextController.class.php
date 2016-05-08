@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
-class TextController extends Controller{
+class TextController extends BaseController{
     public function getlist(){
         $textlist=M('answer')->select();
         $this->assign('textlist',$textlist);
@@ -64,6 +64,7 @@ class TextController extends Controller{
     		$this->error('删除失败！');
     	}
     }
+    
 }
 
 ?>

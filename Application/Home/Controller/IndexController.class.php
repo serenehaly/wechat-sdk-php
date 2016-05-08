@@ -52,6 +52,10 @@ class IndexController extends Controller{
                 
                 //数据类型为TEXT
                 case Wechat::MSG_TYPE_TEXT:
+                    
+                     
+                    
+                    
                     //查找该请求信息是否有对应的操作
                     $result = M('answer')->where(array('problem'=>$data['Content']))->find();
                     if($result){
@@ -82,38 +86,50 @@ class IndexController extends Controller{
                         }
                     }else{
                         //数据库里不存在该请求信息，则输出“你说啥”
-                        $pro=$data['Content'];
-                        $one=strpos($pro,":")+1;
-                        $two=strpos($pro,":");
-                        $three=strrpos($pro, ':')+1;
-                        //$needle = "a";//判断是否包含a这个字符
-                        // $tmparray = explode($needle,$str);
-                        // if(count($tmparray)>1){
-                        // return true;
-                        // } else{
-                        // return false;
-                        // }
-                        
-                        $yes=strstr($pro,':');
-                        if($yes!=null){
-                            $problem=mb_strcut($m, $a, $b-$a-3, 'utf-8');
-                            $answer=substr($pro,$three);
-                            $add['problem']=$problem;
-                            $add['answer']=$answer;
-                            $res=M('answer')->add($add);
-                            $wechat->replyText("问答文本已录入数据库，即刻可问答！");
+                //      $m='问:你是谁？答:是我。';
+                // 		$a = strpos($m,":")+1;
+                // 		$b = strrpos($m, ':');
+                // 		$data['problem']=mb_strcut($m, $a, $b-$a-3, 'utf-8');
+                // 		$data['answer']=substr($m,strrpos($m, ':')+1);
+                // 		$add=M('test')->add($data);
+                // 		if ($add) {
+                // 			$this->success('请求信息添加成功',U('getlist'));
+                // 		} else {
+                // 			$this->error('添加失败');
+                // 		}
+                    //     $pro=$data['Content'];
+                    //     $one=strpos($pro,":")+1;
+                    //     $two=strpos($pro,":");
+                    //     $three=strrpos($pro, ':')+1;
+                    //     $yes=strstr($pro,':');
+                    //     if($yes!=null){
+                    //         $problem=mb_strcut($m, $a, $b-$a-3, 'utf-8');
+                    //         $answer=substr($pro,$three);
+                    //         $add['problem']=$problem;
+                    //         $add['answer']=$answer;
+                    //         $res=M('answer')->add($add);
+                    //         $wechat->replyText("问答文本已录入数据库，即刻可问答！");
+                    //     }else{
+                    //         $wechat->replyText("你说啥"); 
+                    //     }
+                    // }
+                        $res = substr($data['Content'],0,6);
+                        $answer_with_text = strstr($data['Content'],"答：");
+                        $answer = substr($answer_with_text,6);
+                        $problem_with_text = substr($data['Content'],6);
+                        $problem = substr($problem_with_text,0,strlen($problem_with_text)-strlen($answer)-6);
+                        if($res == "问："){
+                            
+                            $add['problem'] = $problem;
+                            $add['answer'] = $answer;
+                            $result = M('answer')->add($add);
+                            $wechat->replyText("你问的问题是：" . $problem . "\n" . "你的答案是：" . $answer . "\n" . "你的问答已录入数据库，即刻可进行问答聊天。不信你可以试试看~");
+                            //$wechat->replyText($result);
                         }else{
-                            $wechat->replyText("你说啥"); 
+                            $wechat->replyText("你说啥？");
                         }
-                        // $a = strpos($m,":")+1;
-                        // $b = strrpos($m, ':');
-                        // echo mb_strcut($m, $a, $b-$a-3, 'utf-8') ."\n" .
-                        // substr($m,strrpos($m, ':')+1) ;
-                        // echo $a.$b;
-                       //$wechat->replyText("你说啥");
-                    }
                     break;
- 
+                    }
                     case Wechat::MSG_TYPE_IMAGE:
                         $wechat->replyText(json_encode($data));
                         break;
